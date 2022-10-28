@@ -1,4 +1,4 @@
-package com.fingermidia.utils.dao;
+package com.fingermidia.dao;
 
 import java.sql.*;
 import java.util.Arrays;

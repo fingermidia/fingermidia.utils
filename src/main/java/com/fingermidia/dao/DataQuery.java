@@ -1,4 +1,4 @@
-package com.fingermidia.utils.dao;
+package com.fingermidia.dao;
 
 import com.fingermidia.utils.DateTime;
 import org.json.JSONArray;

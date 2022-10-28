@@ -1,5 +1,5 @@
 
-package com.fingermidia.utils.dao;
+package com.fingermidia.dao;
 
 import org.json.JSONObject;
 
