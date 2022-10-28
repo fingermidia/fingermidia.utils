@@ -33,7 +33,7 @@ public class ResultSetData implements AutoCloseable {
         this.ps = conn.prepareStatement(query);
         int i = 1;
         for (Object o : p) {
-            this.ps.setObject(i++, retiraInject(o));
+            this.ps.setObject(i++, DataQuery.retiraInject(o));
         }
         executeQuery();
     }
@@ -100,14 +100,6 @@ public class ResultSetData implements AutoCloseable {
         ps.close();
         rs = null;
         ps = null;
-    }
-
-    public static Object retiraInject(Object o) {
-        if (o != null && o.getClass().getCanonicalName().contains("String")) {
-            String s = (String) o;
-            o = s.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-        }
-        return o;
     }
 
 }
