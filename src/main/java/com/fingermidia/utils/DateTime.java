@@ -434,6 +434,6 @@ public class DateTime implements Comparable {
     }
 
     public boolean isSameDay(DateTime d) {
-        return this.getDay() = d.getDay() && this.getMonth() = d.getMonth() && this.getYear() = d.getYear();
+        return this.getDay() == d.getDay() && this.getMonth() == d.getMonth() && this.getYear() == d.getYear();
     }
 }
