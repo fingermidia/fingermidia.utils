@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- *
  * @author Dirceu
  * @ajuda Stefano
  */
@@ -255,7 +254,7 @@ public class DateTime implements Comparable {
         return new DateTime(this.getMillis());
     }
 
-//    public void setLocale(Locale locale) {
+    //    public void setLocale(Locale locale) {
 //        this.locale = locale;
 //    }
     public int[] array() {
@@ -432,5 +431,9 @@ public class DateTime implements Comparable {
             return diffWorkingDayInSeconds(v2, v1);
         }
 
+    }
+
+    public boolean isSameDay(DateTime d) {
+        return this.getDay() = d.getDay() && this.getMonth() = d.getMonth() && this.getYear() = d.getYear();
     }
 }
