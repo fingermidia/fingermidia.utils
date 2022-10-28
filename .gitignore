@@ -1,0 +1,9 @@
+.gradle/
+.idea/
+.vscode/
+build/
+.DS_Store
+*.iml
+
+onthego.chat.webchat/src/main/webapp/prepros-6.config
+*.class
