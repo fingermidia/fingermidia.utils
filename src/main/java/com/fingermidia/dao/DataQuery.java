@@ -151,7 +151,7 @@ public class DataQuery {
         JSONObject jo = new JSONObject();
         for (int i = 1; i <= md.getColumnCount(); ++i) {
             Object o = rs.getObject(i);
-            if (o.getClass() == Timestamp.class) {
+            if (o != null && o.getClass() == Timestamp.class) {
                 DateTime d = new DateTime((Timestamp) o);
                 jo.put(md.getColumnName(i), d.toString("dd/MM/yyyy HH:mm:ss"));
             } else {
