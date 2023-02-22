@@ -9,18 +9,15 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.time.Instant;
+import java.time.ZoneId;
 
 /**
  * @author Dirceu
- * @ajuda Stefano
  */
 public class DateTime implements Comparable {
 
     private long millis = 0;
-    private Locale locale = new Locale("pt", "BR");
 
     public DateTime(DateTime d) {
         this.millis = d.getMillis();
@@ -30,16 +27,16 @@ public class DateTime implements Comparable {
         return "America/Sao_Paulo";
     }
 
+    private static String getGMT() {
+        return "GMT-3";
+    }
+
     public DateTime(String date, String format) throws ParseException {
-        TimeZone.setDefault(TimeZone.getTimeZone(getZone()));
-        //clearTimeZone();
         DateFormat fmt = new SimpleDateFormat(format);
         this.millis = fmt.parse(date).getTime();
     }
 
     public DateTime(int... v) throws ParseException {
-        TimeZone.setDefault(TimeZone.getTimeZone(getZone()));
-        //clearTimeZone();
         String date = v[2] + "/" + v[1] + "/" + v[0] + " " + v[3] + ":" + v[4] + ":" + v[5];
         String format = "dd/MM/yyyy HH:mm:ss";
         DateFormat fmt = new SimpleDateFormat(format);
@@ -47,8 +44,6 @@ public class DateTime implements Comparable {
     }
 
     public DateTime(int year, int month, int day) throws ParseException {
-        TimeZone.setDefault(TimeZone.getTimeZone(getZone()));
-        //clearTimeZone();
         String date = day + "/" + month + "/" + year;
         String format = "dd/MM/yyyy";
         DateFormat fmt = new SimpleDateFormat(format);
@@ -56,13 +51,10 @@ public class DateTime implements Comparable {
     }
 
     public DateTime(long millis) {
-        TimeZone.setDefault(TimeZone.getTimeZone(getZone()));
         this.millis = millis;
     }
 
     public DateTime(Timestamp value) {
-        TimeZone.setDefault(TimeZone.getTimeZone(getZone()));
-        //clearTimeZone();
         if (value != null) {
             this.millis = value.getTime();
         } else {
@@ -71,8 +63,6 @@ public class DateTime implements Comparable {
     }
 
     public DateTime(Date value) {
-        TimeZone.setDefault(TimeZone.getTimeZone(getZone()));
-        //clearTimeZone();
         if (value != null) {
             this.millis = value.getTime();
         } else {
@@ -81,10 +71,7 @@ public class DateTime implements Comparable {
     }
 
     public static DateTime now() {
-        TimeZone.setDefault(TimeZone.getTimeZone(getZone()));
-        //clearTimeZone();
-        Calendar c = Calendar.getInstance();
-        return new DateTime(c.getTimeInMillis());
+        return new DateTime(getInstant().toEpochMilli());
     }
 
     public Date getDate() {
@@ -113,8 +100,7 @@ public class DateTime implements Comparable {
 
     public String toString(String format) {
         if (this.millis != 0) {
-            DateFormat fmt = new SimpleDateFormat(format, locale);
-//            DateFormat fmt = new SimpleDateFormat(format);
+            DateFormat fmt = new SimpleDateFormat(format);
             return fmt.format(getTimestamp());
         } else {
             return "";
@@ -202,24 +188,26 @@ public class DateTime implements Comparable {
         return c;
     }
 
+    private static Instant getInstant() {
+        System.setProperty("user.timezone", getZone());
+        Instant now = Instant.now();
+        now.atZone(ZoneId.of(getZone()));
+        return now;
+    }
+
     public void addMonth(int v) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(this.millis);
-        c.add(Calendar.MONTH, v);
-        this.millis = c.getTimeInMillis();
+        // TODO: Corrigir os meses com 31, 30, 29, 28
+        addDay(v * 30);
     }
 
     public DateTime addCloneMonth(int v) {
-        DateTime c = this.clone();
-        c.addMonth(v);
-        return c;
+        DateTime d = this.clone();
+        d.addMonth(v);
+        return d;
     }
 
     public void addYear(int v) {
-        Calendar c = Calendar.getInstance();
-        c.setTimeInMillis(this.millis);
-        c.add(Calendar.YEAR, v);
-        this.millis = c.getTimeInMillis();
+        addDay(v * 365);
     }
 
     public DateTime addCloneYear(int v) {
@@ -254,9 +242,6 @@ public class DateTime implements Comparable {
         return new DateTime(this.getMillis());
     }
 
-    //    public void setLocale(Locale locale) {
-//        this.locale = locale;
-//    }
     public int[] array() {
         int[] v = new int[7];
         v[0] = this.getYear();
@@ -265,13 +250,7 @@ public class DateTime implements Comparable {
         v[3] = this.getHour();
         v[4] = this.getMinute();
         v[5] = this.getSecond();
-        v[6] = this.getWeekDaySimple().equals("Dom") || this.getWeekDaySimple().equals("Sun") ? 1
-                : this.getWeekDaySimple().equals("Seg") || this.getWeekDaySimple().equals("Mon") ? 2
-                : this.getWeekDaySimple().equals("Ter") || this.getWeekDaySimple().equals("Tue") ? 3
-                : this.getWeekDaySimple().equals("Qua") || this.getWeekDaySimple().equals("Wed") ? 4
-                : this.getWeekDaySimple().equals("Qui") || this.getWeekDaySimple().equals("Thu") ? 5
-                : this.getWeekDaySimple().equals("Sex") || this.getWeekDaySimple().equals("Fri") ? 6 : 7;
-
+        v[6] = getWeekDayInt();
         return v;
     }
 
@@ -414,7 +393,7 @@ public class DateTime implements Comparable {
                     if (t[3] < 14) {
                         t[3] += 2;
                     }
-                    long diff = (((18 - t[3]) * 60) * 60) + (t[4] * 60) + t[5];
+                    long diff = (((18 - t[3]) * 60) * 60) + (t[4] * 60) + (long) t[5];
 
                     t[3] = 8;
                     t[4] = 0;
@@ -431,9 +410,5 @@ public class DateTime implements Comparable {
             return diffWorkingDayInSeconds(v2, v1);
         }
 
-    }
-
-    public boolean isSameDay(DateTime d) {
-        return this.getDay() == d.getDay() && this.getMonth() == d.getMonth() && this.getYear() == d.getYear();
     }
 }
