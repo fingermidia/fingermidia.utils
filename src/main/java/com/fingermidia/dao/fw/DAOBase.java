@@ -1,6 +1,8 @@
 
-package com.fingermidia.dao;
+package com.fingermidia.dao.fw;
 
+import com.fingermidia.dao.DataQuery;
+import com.fingermidia.dao.ResultSetData;
 import com.fingermidia.utils.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;

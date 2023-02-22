@@ -1,6 +1,7 @@
 
-package com.fingermidia.dao;
+package com.fingermidia.dao.fw;
 
+import com.fingermidia.dao.ResultSetData;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;

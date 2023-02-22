@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.fingermidia.dao;
+package com.fingermidia.dao.fw;
 
 import com.fingermidia.utils.DateTime;
 import org.json.JSONObject;
