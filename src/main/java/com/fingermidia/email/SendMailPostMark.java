@@ -10,12 +10,12 @@ import java.util.Map;
 
 public class SendMailPostMark extends Thread {
     private static final String URL = "https://api.postmarkapp.com/email";
-    private String subject;
-    private String message;
-    private String sendTo;
-    private String apiToken;
-    private String contact;
-    private STREAM stream = STREAM.OUTBOUND;
+    protected String subject;
+    protected String message;
+    protected String sendTo;
+    protected String apiToken;
+    protected String contact;
+    public STREAM stream = STREAM.OUTBOUND;
 
     public enum STREAM {
         OUTBOUND,
@@ -37,9 +37,6 @@ public class SendMailPostMark extends Thread {
         this.stream = stream;
         this.apiToken = apiToken;
         this.contact = contact;
-    }
-
-    public SendMailPostMark() {
     }
 
     @Override
