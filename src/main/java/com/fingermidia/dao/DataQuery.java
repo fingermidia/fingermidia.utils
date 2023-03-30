@@ -157,7 +157,8 @@ public class DataQuery {
                 jo.put(md.getColumnName(i), d.toString("dd/MM/yyyy HH:mm:ss"));
             } else if (o instanceof PGobject) {
                 PGobject pg = (PGobject) o;
-                jo.put(md.getColumnName(i), pg.getValue());
+                JSONObject jj = new JSONObject(pg.getValue());
+                jo.put(md.getColumnName(i), jj);
             } else {
                 jo.put(md.getColumnName(i), o);
             }
