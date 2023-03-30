@@ -3,6 +3,7 @@ package com.fingermidia.dao;
 import com.fingermidia.utils.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.postgresql.util.PGobject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -154,6 +155,9 @@ public class DataQuery {
             if (o != null && o.getClass() == Timestamp.class) {
                 DateTime d = new DateTime((Timestamp) o);
                 jo.put(md.getColumnName(i), d.toString("dd/MM/yyyy HH:mm:ss"));
+            } else if (o instanceof PGobject) {
+                PGobject pg = (PGobject) o;
+                jo.put(md.getColumnName(i), pg.getValue());
             } else {
                 jo.put(md.getColumnName(i), o);
             }
