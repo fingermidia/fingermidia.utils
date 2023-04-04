@@ -112,7 +112,24 @@ public class DateTime implements Comparable {
     }
 
     public String getWeekDaySimple() {
-        return this.toString("E");
+        String day = this.toString("E").toLowerCase();
+        switch (day) {
+            case "sun":
+                return "Dom";
+            case "mon":
+                return "Seg";
+            case "tue":
+                return "Ter";
+            case "wed":
+                return "Qua";
+            case "thu":
+                return "Qui";
+            case "fri":
+                return "Sex";
+            case "sat":
+                return "Sab";
+        }
+        return day;
     }
 
     public int getWeekDayInt() {
@@ -130,6 +147,37 @@ public class DateTime implements Comparable {
 
     public int getMonth() {
         return Integer.parseInt(this.toString("MM"));
+    }
+
+    public String getMonthStr() {
+        String month = this.toString("MMMM").toLowerCase();
+        switch (month) {
+            case "january":
+                return "Janeiro";
+            case "february":
+                return "Fevereiro";
+            case "march":
+                return "Março";
+            case "april":
+                return "Abril";
+            case "may":
+                return "Maio";
+            case "june":
+                return "Junho";
+            case "july":
+                return "Julho";
+            case "august":
+                return "Agosto";
+            case "september":
+                return "Setembro";
+            case "october":
+                return "Outubro";
+            case "november":
+                return "Novembro";
+            case "december":
+                return "Dezembro";
+        }
+        return month;
     }
 
     public int getYear() {
