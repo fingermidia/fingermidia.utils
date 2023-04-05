@@ -247,12 +247,18 @@ public class DateTime implements Comparable {
         // TODO: Corrigir os meses com 31, 30, 29, 28
 //        addDay(v * 30);
 
+        int initDay = getDay();
+
         for (int i = 0; i < v; i++) {
             int month = getMonth();
             do {
                 addDay(1);
             } while (month == getMonth());
         }
+
+        do {
+            addDay(1);
+        } while (initDay != getDay());
 
     }
 
