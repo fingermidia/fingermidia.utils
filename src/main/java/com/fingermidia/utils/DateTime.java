@@ -256,6 +256,10 @@ public class DateTime implements Comparable {
                 do {
                     addDay(1);
                 } while (initDay != getDay());
+            } else {
+                do {
+                    addDay(-1);
+                } while (initDay != getDay());
             }
         } else {
             int initDay = getDay();
@@ -265,7 +269,11 @@ public class DateTime implements Comparable {
                     addDay(-1);
                 } while (month == getMonth());
             }
-            if (initDay > getDay()) {
+            if (initDay < getDay()) {
+                do {
+                    addDay(1);
+                } while (initDay != getDay());
+            } else {
                 do {
                     addDay(-1);
                 } while (initDay != getDay());
