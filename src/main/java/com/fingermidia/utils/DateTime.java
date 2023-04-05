@@ -254,11 +254,11 @@ public class DateTime implements Comparable {
             }
             if (initDay < getDay()) {
                 do {
-                    addDay(1);
-                } while (initDay != getDay());
-            } else {
-                do {
                     addDay(-1);
+                } while (initDay != getDay());
+            } else if (initDay > getDay()) {
+                do {
+                    addDay(1);
                 } while (initDay != getDay());
             }
         } else {
@@ -271,11 +271,11 @@ public class DateTime implements Comparable {
             }
             if (initDay < getDay()) {
                 do {
-                    addDay(1);
-                } while (initDay != getDay());
-            } else {
-                do {
                     addDay(-1);
+                } while (initDay != getDay());
+            } else if (initDay > getDay()) {
+                do {
+                    addDay(1);
                 } while (initDay != getDay());
             }
         }
