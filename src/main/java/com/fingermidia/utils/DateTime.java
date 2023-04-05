@@ -244,24 +244,33 @@ public class DateTime implements Comparable {
     }
 
     public void addMonth(int v) {
-        // TODO: Corrigir os meses com 31, 30, 29, 28
-//        addDay(v * 30);
-
-        int initDay = getDay();
-
-        for (int i = 0; i < v; i++) {
-            int month = getMonth();
-            do {
-                addDay(1);
-            } while (month == getMonth());
+        if (v > 0) {
+            int initDay = getDay();
+            for (int i = 0; i < v; i++) {
+                int month = getMonth();
+                do {
+                    addDay(1);
+                } while (month == getMonth());
+            }
+            if (initDay < getDay()) {
+                do {
+                    addDay(1);
+                } while (initDay != getDay());
+            }
+        } else {
+            int initDay = getDay();
+            for (int i = 0; i < (v * -1); i++) {
+                int month = getMonth();
+                do {
+                    addDay(-1);
+                } while (month == getMonth());
+            }
+            if (initDay > getDay()) {
+                do {
+                    addDay(-1);
+                } while (initDay != getDay());
+            }
         }
-
-        if (initDay < getDay()) {
-            do {
-                addDay(1);
-            } while (initDay != getDay());
-        }
-
     }
 
     public DateTime addCloneMonth(int v) {
