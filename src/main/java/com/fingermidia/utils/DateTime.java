@@ -256,9 +256,11 @@ public class DateTime implements Comparable {
             } while (month == getMonth());
         }
 
-        do {
-            addDay(1);
-        } while (initDay != getDay());
+        if (initDay < getDay()) {
+            do {
+                addDay(1);
+            } while (initDay != getDay());
+        }
 
     }
 
