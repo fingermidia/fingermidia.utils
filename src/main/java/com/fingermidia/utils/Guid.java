@@ -8,7 +8,6 @@ package com.fingermidia.utils;
 import java.util.Random;
 
 /**
- *
  * @author Dirceu
  */
 public class Guid {
@@ -30,4 +29,16 @@ public class Guid {
         return Long.toString(rand, 32) +
                 Long.toString(System.currentTimeMillis() & 0xFFFFFFFFFFFFFL, 32);
     }
+
+    public static String getString10() {
+        return guidFactory.getGuidString10().toUpperCase();
+    }
+
+    protected String getGuidString10() {
+        long rand = (random.nextLong() & 0x7FFFFFFL) |
+                0x4000000L;
+        return Long.toString(rand, 32) +
+                Long.toString(System.currentTimeMillis() & 0xFFFFL, 32);
+    }
 }
+
