@@ -3,6 +3,10 @@ package com.fingermidia.email;
 import com.fingermidia.integration.Generic;
 import com.fingermidia.integration.Request;
 import com.fingermidia.integration.Response;
+import com.wildbit.java.postmark.Postmark;
+import com.wildbit.java.postmark.client.ApiClient;
+import com.wildbit.java.postmark.client.data.model.message.Message;
+import com.wildbit.java.postmark.client.data.model.message.MessageResponse;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -16,6 +20,7 @@ public class SendMailPostMark extends Thread {
     protected String apiToken;
     protected String contact;
     public STREAM stream = STREAM.OUTBOUND;
+    public String pathFile;
 
     public enum STREAM {
         OUTBOUND,
@@ -28,6 +33,7 @@ public class SendMailPostMark extends Thread {
         this.sendTo = sendTo;
         this.apiToken = apiToken;
         this.contact = contact;
+        this.pathFile = null;
     }
 
     public SendMailPostMark(String subject, String message, String sendTo, STREAM stream, String apiToken, String contact) {
@@ -37,12 +43,27 @@ public class SendMailPostMark extends Thread {
         this.stream = stream;
         this.apiToken = apiToken;
         this.contact = contact;
+        this.pathFile = null;
+    }
+
+    public SendMailPostMark(String subject, String message, String sendTo, STREAM stream, String apiToken, String contact, String pathFile) {
+        this.subject = subject;
+        this.message = message;
+        this.sendTo = sendTo;
+        this.stream = stream;
+        this.apiToken = apiToken;
+        this.contact = contact;
+        this.pathFile = pathFile;
     }
 
     @Override
     public void run() {
         try {
-            send(subject, message, sendTo, stream, apiToken, contact);
+            if (pathFile == null) {
+                send(subject, message, sendTo, stream, apiToken, contact);
+            } else {
+                sendPostmark(subject, message, sendTo, stream, apiToken, contact, pathFile);
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -71,5 +92,17 @@ public class SendMailPostMark extends Thread {
         req.setBody(j.toString());
         Response res = Generic.requestPost(req);
         return res.getJSON();
+    }
+
+    public static MessageResponse sendPostmark(String subject, String body, String sendTo, STREAM stream, String apiToken, String contact, String pathFile) throws Exception {
+        ApiClient client = Postmark.getApiClient(apiToken);
+        Message message = new Message(contact, sendTo, subject, body);
+        if (stream == STREAM.OUTBOUND) {
+            message.setMessageStream("outbound");
+        } else {
+            message.setMessageStream("broadcast");
+        }
+        message.addAttachment(pathFile);
+        return client.deliverMessage(message);
     }
 }
