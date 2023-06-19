@@ -185,6 +185,25 @@ public class Helper {
         return ret.toString();
     }
 
+    public static String obterColunasStringGroupBy(TOBase t, String alias) {
+
+        StringBuilder ret = new StringBuilder();
+
+        Class<?> c = t.getClass();
+
+        for (Field field : c.getDeclaredFields()) {
+            if (field.isAnnotationPresent(Column.class)) {
+                if (ret.length() == 0) {
+                    ret.append(alias).append(".").append(field.getName());
+                } else {
+                    ret.append(", ").append(alias).append(".").append(field.getName());
+                }
+            }
+        }
+
+        return ret.toString();
+    }
+
     public static List<Field> obterColunasSemChave(TOBase t) throws Exception {
 
         List<Field> l = new ArrayList<>();

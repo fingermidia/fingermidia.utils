@@ -22,6 +22,10 @@ public class TOBase {
         return Helper.obterColunasString(this, alias, prename);
     }
 
+    public String getColumnsGroupBy(String alias) throws Exception {
+        return Helper.obterColunasStringGroupBy(this, alias);
+    }
+
     public String getColumns() throws Exception {
         return Helper.obterColunasString(this);
     }
