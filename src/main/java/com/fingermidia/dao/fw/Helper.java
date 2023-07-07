@@ -43,6 +43,9 @@ public class Helper {
                     o = runGetter(f, t);
                     if (o != null) {
                         v = (String) o;
+                        if (f.getAnnotation(Column.class).ofuscate()) {
+                            v = ofuscate(v, f.getAnnotation(Column.class).ofuscateSize());
+                        }
                         j.put(nomeJson, v.trim());
                     }
                 } else {
@@ -55,6 +58,19 @@ public class Helper {
 
         return j;
 
+    }
+
+    public static String ofuscate(String v) {
+        return ofuscate(v, 0);
+    }
+
+    public static String ofuscate(String v, int length) {
+        if (length == 0 || length > v.length()) {
+            length = v.length() - v.length() / 2;
+        }
+        String s = v.substring(0, length);
+        String r = s.replaceAll("[A-Za-z0-9]", "*") + v.substring(length);
+        return r;
     }
 
     public static Object runGetter(Field field, TOBase o) throws Exception {

@@ -17,6 +17,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD) //on class level
 public @interface Column {
 
+    boolean ofuscate() default false;
+
+    int ofuscateSize() default 0;
+
     public enum TYPE {
 
         COLUMN, KEY
