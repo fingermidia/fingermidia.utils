@@ -26,7 +26,7 @@ configurations {
 
 dependencies {
 
-    implementation('com.amazonaws:aws-java-sdk:1.11.163')
+    implementation('com.amazonaws:aws-java-sdk:1.12.529')
 
     implementation('com.squareup.okhttp3:okhttp:3.10.0')
     implementation('com.squareup.okhttp3:logging-interceptor:3.10.0')
@@ -36,7 +36,7 @@ dependencies {
     implementation('org.apache.httpcomponents:httpcore:4.4.4')
     implementation('org.apache.httpcomponents:httpmime:4.5.2')
 
-    implementation('org.json:json:20220924')
+    implementation('org.json:json:20231013')
     implementation('org.postgresql:postgresql:42.2.27')
 
     implementation 'com.wildbit.java:postmark:1.8.0'
