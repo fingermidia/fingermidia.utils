@@ -5,6 +5,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.config.Registry;
 import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.HttpClientConnectionManager;
@@ -53,6 +54,47 @@ public class Generic {
         try (CloseableHttpClient httpClient = builder.build()) {
 
             HttpPost r = new HttpPost(req.getUrl());
+            req.getHeaders().entrySet().forEach((entry) -> {
+                r.addHeader(entry.getKey(), entry.getValue());
+            });
+            r.setEntity(new StringEntity(req.getBody()));
+
+            try (CloseableHttpResponse response = httpClient.execute(r)) {
+                HttpEntity entity = response.getEntity();
+                Response res = getResponse(response);
+                EntityUtils.consume(entity);
+                return res;
+            }
+
+        }
+    }
+
+    public static Response requestPutSSL(Request req) throws Exception {
+
+        KeyStore keyStore = KeyStore.getInstance("pkcs12");
+        InputStream keyStoreInput = new FileInputStream(req.getCertificatePath());
+        keyStore.load(keyStoreInput, req.getCertificatePassword().toCharArray());
+
+        SSLContext sslContext = SSLContexts.custom()
+                .loadKeyMaterial(keyStore, req.getCertificatePassword().toCharArray())
+                .useTLS()
+                .build();
+
+        HttpClientBuilder builder = HttpClientBuilder.create();
+        SSLConnectionSocketFactory sslConnectionFactory = new SSLConnectionSocketFactory(
+                sslContext, SSLConnectionSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+        builder.setSSLSocketFactory(sslConnectionFactory);
+        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
+                .register("https", sslConnectionFactory)
+                .register("http", new PlainConnectionSocketFactory())
+                .build();
+        HttpClientConnectionManager ccm = new BasicHttpClientConnectionManager(registry);
+        builder.setConnectionManager(ccm);
+
+        // Perform a sample HTTP request.
+        try (CloseableHttpClient httpClient = builder.build()) {
+
+            HttpPut r = new HttpPut(req.getUrl());
             req.getHeaders().entrySet().forEach((entry) -> {
                 r.addHeader(entry.getKey(), entry.getValue());
             });
