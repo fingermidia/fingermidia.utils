@@ -167,7 +167,7 @@ public class Helper {
 
         for (Field field : c.getDeclaredFields()) {
             if (field.isAnnotationPresent(Column.class)) {
-                if (ret.length() == 0) {
+                if (ret.isEmpty()) {
                     ret.append(alias).append(".").append(field.getName()).append(" as ").append(alias).append("_").append(field.getName());
                 } else {
                     ret.append(", ").append(alias).append(".").append(field.getName()).append(" as ").append(alias).append("_").append(field.getName());
@@ -190,7 +190,7 @@ public class Helper {
                 String name = field.getName();
                 String asName = prename + name;
 
-                if (ret.length() == 0) {
+                if (ret.isEmpty()) {
                     ret.append(alias).append(".").append(name).append(" as ").append(asName);
                 } else {
                     ret.append(", ").append(alias).append(".").append(name).append(" as ").append(asName);
@@ -209,7 +209,7 @@ public class Helper {
 
         for (Field field : c.getDeclaredFields()) {
             if (field.isAnnotationPresent(Column.class)) {
-                if (ret.length() == 0) {
+                if (ret.isEmpty()) {
                     ret.append(alias).append(".").append(field.getName());
                 } else {
                     ret.append(", ").append(alias).append(".").append(field.getName());
