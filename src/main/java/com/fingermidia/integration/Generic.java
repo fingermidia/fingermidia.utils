@@ -98,7 +98,7 @@ public class Generic {
             req.getHeaders().entrySet().forEach((entry) -> {
                 r.addHeader(entry.getKey(), entry.getValue());
             });
-            
+
             try (CloseableHttpResponse response = httpClient.execute(r)) {
                 HttpEntity entity = response.getEntity();
                 Response res = getResponse(response);
