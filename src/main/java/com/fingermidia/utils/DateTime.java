@@ -11,6 +11,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * @author Dirceu
@@ -236,11 +237,22 @@ public class DateTime implements Comparable {
         return c;
     }
 
+//    private static Instant getInstant() {
+//        System.setProperty("user.timezone", getZone());
+//        Instant now = Instant.now();
+//        now.atZone(ZoneId.of(getZone()));
+//        return now;
+//    }
+
     private static Instant getInstant() {
-        System.setProperty("user.timezone", getZone());
+        return getZonedDateTime().toInstant();
+    }
+
+    private static ZonedDateTime getZonedDateTime() {
+        String zone = getZone();
+        System.setProperty("user.timezone", zone);
         Instant now = Instant.now();
-        now.atZone(ZoneId.of(getZone()));
-        return now;
+        return now.atZone(ZoneId.of(zone));
     }
 
     public void addMonth(int v) {

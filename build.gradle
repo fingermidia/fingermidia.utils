@@ -37,7 +37,7 @@ dependencies {
     implementation('org.apache.httpcomponents:httpmime:4.5.2')
 
     implementation('org.json:json:20231013')
-    implementation('org.postgresql:postgresql:42.2.27')
+    implementation('org.postgresql:postgresql:42.7.2')
 
     implementation 'com.wildbit.java:postmark:1.8.0'
 
