@@ -83,8 +83,9 @@ public class DateTime implements Comparable {
         }
     }
 
-    public void setMillis(long millis) {
+    public DateTime setMillis(long millis) {
         this.millis = millis;
+        return this;
     }
 
     public long getMillis() {
@@ -114,23 +115,16 @@ public class DateTime implements Comparable {
 
     public String getWeekDaySimple() {
         String day = this.toString("E").toLowerCase();
-        switch (day) {
-            case "sun":
-                return "Dom";
-            case "mon":
-                return "Seg";
-            case "tue":
-                return "Ter";
-            case "wed":
-                return "Qua";
-            case "thu":
-                return "Qui";
-            case "fri":
-                return "Sex";
-            case "sat":
-                return "Sab";
-        }
-        return day;
+        return switch (day) {
+            case "sun" -> "Dom";
+            case "mon" -> "Seg";
+            case "tue" -> "Ter";
+            case "wed" -> "Qua";
+            case "thu" -> "Qui";
+            case "fri" -> "Sex";
+            case "sat" -> "Sab";
+            default -> day;
+        };
     }
 
     public int getWeekDayInt() {
@@ -152,33 +146,21 @@ public class DateTime implements Comparable {
 
     public String getMonthStr() {
         String month = this.toString("MMMM").toLowerCase();
-        switch (month) {
-            case "january":
-                return "Janeiro";
-            case "february":
-                return "Fevereiro";
-            case "march":
-                return "Março";
-            case "april":
-                return "Abril";
-            case "may":
-                return "Maio";
-            case "june":
-                return "Junho";
-            case "july":
-                return "Julho";
-            case "august":
-                return "Agosto";
-            case "september":
-                return "Setembro";
-            case "october":
-                return "Outubro";
-            case "november":
-                return "Novembro";
-            case "december":
-                return "Dezembro";
-        }
-        return month;
+        return switch (month) {
+            case "january" -> "Janeiro";
+            case "february" -> "Fevereiro";
+            case "march" -> "Março";
+            case "april" -> "Abril";
+            case "may" -> "Maio";
+            case "june" -> "Junho";
+            case "july" -> "Julho";
+            case "august" -> "Agosto";
+            case "september" -> "Setembro";
+            case "october" -> "Outubro";
+            case "november" -> "Novembro";
+            case "december" -> "Dezembro";
+            default -> month;
+        };
     }
 
     public int getYear() {
@@ -197,8 +179,9 @@ public class DateTime implements Comparable {
         return Integer.parseInt(this.toString("ss"));
     }
 
-    public void addSecond(long v) {
+    public DateTime addSecond(long v) {
         this.millis += v * 1000;
+        return this;
     }
 
     public DateTime addCloneSecond(long v) {
@@ -207,8 +190,9 @@ public class DateTime implements Comparable {
         return c;
     }
 
-    public void addMinute(long v) {
+    public DateTime addMinute(long v) {
         addSecond(v * 60);
+        return this;
     }
 
     public DateTime addCloneMinute(long v) {
@@ -217,8 +201,9 @@ public class DateTime implements Comparable {
         return c;
     }
 
-    public void addHour(long v) {
+    public DateTime addHour(long v) {
         addMinute(v * 60);
+        return this;
     }
 
     public DateTime addCloneHour(long v) {
@@ -227,8 +212,9 @@ public class DateTime implements Comparable {
         return c;
     }
 
-    public void addDay(long v) {
+    public DateTime addDay(long v) {
         addHour(v * 24);
+        return this;
     }
 
     public DateTime addCloneDay(long v) {
@@ -237,25 +223,14 @@ public class DateTime implements Comparable {
         return c;
     }
 
-//    private static Instant getInstant() {
-//        System.setProperty("user.timezone", getZone());
-//        Instant now = Instant.now();
-//        now.atZone(ZoneId.of(getZone()));
-//        return now;
-//    }
-
     private static Instant getInstant() {
-        return getZonedDateTime().toInstant();
-    }
-
-    private static ZonedDateTime getZonedDateTime() {
-        String zone = getZone();
-        System.setProperty("user.timezone", zone);
+        System.setProperty("user.timezone", getZone());
         Instant now = Instant.now();
-        return now.atZone(ZoneId.of(zone));
+        now.atZone(ZoneId.of(getZone()));
+        return now;
     }
 
-    public void addMonth(int v) {
+    public DateTime addMonth(int v) {
         if (v > 0) {
             int initDay = getDay();
             for (int i = 0; i < v; i++) {
@@ -291,6 +266,7 @@ public class DateTime implements Comparable {
                 } while (initDay != getDay());
             }
         }
+        return this;
     }
 
     public DateTime addCloneMonth(int v) {
@@ -299,8 +275,9 @@ public class DateTime implements Comparable {
         return d;
     }
 
-    public void addYear(int v) {
+    public DateTime addYear(int v) {
         addDay(v * 365);
+        return this;
     }
 
     public DateTime addCloneYear(int v) {
@@ -309,8 +286,9 @@ public class DateTime implements Comparable {
         return c;
     }
 
-    public void addDateTime(DateTime v) {
+    public DateTime addDateTime(DateTime v) {
         this.millis += v.getMillis();
+        return this;
     }
 
     public DateTime addCloneDateTime(DateTime v) {
